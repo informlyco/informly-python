@@ -11,7 +11,6 @@ from .environment import InformlyClientEnvironment
 
 if typing.TYPE_CHECKING:
     from .contacts.client import AsyncContactsClient, ContactsClient
-    from .health.client import AsyncHealthClient, HealthClient
 
 
 class InformlyClient:
@@ -32,7 +31,7 @@ class InformlyClient:
 
 
 
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -62,7 +61,7 @@ class InformlyClient:
         *,
         base_url: typing.Optional[str] = None,
         environment: InformlyClientEnvironment = InformlyClientEnvironment.DEFAULT,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -84,16 +83,7 @@ class InformlyClient:
             timeout=_defaulted_timeout,
             logging=logging,
         )
-        self._health: typing.Optional[HealthClient] = None
         self._contacts: typing.Optional[ContactsClient] = None
-
-    @property
-    def health(self):
-        if self._health is None:
-            from .health.client import HealthClient  # noqa: E402
-
-            self._health = HealthClient(client_wrapper=self._client_wrapper)
-        return self._health
 
     @property
     def contacts(self):
@@ -122,7 +112,7 @@ class AsyncInformlyClient:
 
 
 
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -152,7 +142,7 @@ class AsyncInformlyClient:
         *,
         base_url: typing.Optional[str] = None,
         environment: InformlyClientEnvironment = InformlyClientEnvironment.DEFAULT,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -174,16 +164,7 @@ class AsyncInformlyClient:
             timeout=_defaulted_timeout,
             logging=logging,
         )
-        self._health: typing.Optional[AsyncHealthClient] = None
         self._contacts: typing.Optional[AsyncContactsClient] = None
-
-    @property
-    def health(self):
-        if self._health is None:
-            from .health.client import AsyncHealthClient  # noqa: E402
-
-            self._health = AsyncHealthClient(client_wrapper=self._client_wrapper)
-        return self._health
 
     @property
     def contacts(self):

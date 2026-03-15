@@ -15,11 +15,10 @@ if typing.TYPE_CHECKING:
         PaginationMeta,
     )
     from .errors import BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError
-    from . import contacts, health
+    from . import contacts
     from .client import AsyncInformlyClient, InformlyClient
     from .contacts import CreateContactResponse, GetContactResponse, ListContactsResponse
     from .environment import InformlyClientEnvironment
-    from .health import GetHealthResponse, GetHealthResponseData
 _dynamic_imports: typing.Dict[str, str] = {
     "AsyncInformlyClient": ".client",
     "BadRequestError": ".errors",
@@ -31,8 +30,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ErrorResponseErrorDetailsItem": ".types",
     "ForbiddenError": ".errors",
     "GetContactResponse": ".contacts",
-    "GetHealthResponse": ".health",
-    "GetHealthResponseData": ".health",
     "InformlyClient": ".client",
     "InformlyClientEnvironment": ".environment",
     "ListContactsResponse": ".contacts",
@@ -40,7 +37,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PaginationMeta": ".types",
     "UnauthorizedError": ".errors",
     "contacts": ".contacts",
-    "health": ".health",
 }
 
 
@@ -76,8 +72,6 @@ __all__ = [
     "ErrorResponseErrorDetailsItem",
     "ForbiddenError",
     "GetContactResponse",
-    "GetHealthResponse",
-    "GetHealthResponseData",
     "InformlyClient",
     "InformlyClientEnvironment",
     "ListContactsResponse",
@@ -85,5 +79,4 @@ __all__ = [
     "PaginationMeta",
     "UnauthorizedError",
     "contacts",
-    "health",
 ]
