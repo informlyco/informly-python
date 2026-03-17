@@ -13,15 +13,18 @@
 <dd>
 
 ```python
-from informly import InformlyClient
-from informly.environment import InformlyClientEnvironment
+from informly import Informly
+from informly.environment import InformlyEnvironment
 
-client = InformlyClient(
+client = Informly(
     token="<token>",
-    environment=InformlyClientEnvironment.DEFAULT,
+    environment=InformlyEnvironment.DEFAULT,
 )
 
-client.contacts.list_contacts()
+client.contacts.list_contacts(
+    page=1,
+    page_size=20,
+)
 
 ```
 </dd>
@@ -37,7 +40,7 @@ client.contacts.list_contacts()
 <dl>
 <dd>
 
-**page:** `typing.Optional[int]` 
+**page:** `typing.Optional[int]` — Page number (1-indexed)
     
 </dd>
 </dl>
@@ -45,7 +48,7 @@ client.contacts.list_contacts()
 <dl>
 <dd>
 
-**page_size:** `typing.Optional[int]` 
+**page_size:** `typing.Optional[int]` — Number of items per page (1-100)
     
 </dd>
 </dl>
@@ -78,12 +81,12 @@ client.contacts.list_contacts()
 <dd>
 
 ```python
-from informly import InformlyClient
-from informly.environment import InformlyClientEnvironment
+from informly import Informly
+from informly.environment import InformlyEnvironment
 
-client = InformlyClient(
+client = Informly(
     token="<token>",
-    environment=InformlyClientEnvironment.DEFAULT,
+    environment=InformlyEnvironment.DEFAULT,
 )
 
 client.contacts.create_contact()
@@ -102,7 +105,7 @@ client.contacts.create_contact()
 <dl>
 <dd>
 
-**email:** `typing.Optional[str]` 
+**email:** `typing.Optional[str]` — Email address of the contact
     
 </dd>
 </dl>
@@ -110,7 +113,7 @@ client.contacts.create_contact()
 <dl>
 <dd>
 
-**phone:** `typing.Optional[str]` 
+**phone:** `typing.Optional[str]` — Phone number of the contact
     
 </dd>
 </dl>
@@ -118,7 +121,7 @@ client.contacts.create_contact()
 <dl>
 <dd>
 
-**firstname:** `typing.Optional[str]` 
+**firstname:** `typing.Optional[str]` — First name of the contact
     
 </dd>
 </dl>
@@ -126,7 +129,7 @@ client.contacts.create_contact()
 <dl>
 <dd>
 
-**lastname:** `typing.Optional[str]` 
+**lastname:** `typing.Optional[str]` — Last name of the contact
     
 </dd>
 </dl>
@@ -134,7 +137,7 @@ client.contacts.create_contact()
 <dl>
 <dd>
 
-**jobtitle:** `typing.Optional[str]` 
+**jobtitle:** `typing.Optional[str]` — Job title of the contact
     
 </dd>
 </dl>
@@ -142,7 +145,7 @@ client.contacts.create_contact()
 <dl>
 <dd>
 
-**company:** `typing.Optional[str]` 
+**company:** `typing.Optional[str]` — Company of contact (if different) or organization name
     
 </dd>
 </dl>
@@ -175,12 +178,12 @@ client.contacts.create_contact()
 <dd>
 
 ```python
-from informly import InformlyClient
-from informly.environment import InformlyClientEnvironment
+from informly import Informly
+from informly.environment import InformlyEnvironment
 
-client = InformlyClient(
+client = Informly(
     token="<token>",
-    environment=InformlyClientEnvironment.DEFAULT,
+    environment=InformlyEnvironment.DEFAULT,
 )
 
 client.contacts.get_contact(
@@ -201,7 +204,7 @@ client.contacts.get_contact(
 <dl>
 <dd>
 
-**id:** `str` 
+**id:** `str` — Unique identifier of the resource
     
 </dd>
 </dl>

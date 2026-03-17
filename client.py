@@ -7,13 +7,13 @@ import typing
 import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.logging import LogConfig, Logger
-from .environment import InformlyClientEnvironment
+from .environment import InformlyEnvironment
 
 if typing.TYPE_CHECKING:
     from .contacts.client import AsyncContactsClient, ContactsClient
 
 
-class InformlyClient:
+class Informly:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -22,12 +22,12 @@ class InformlyClient:
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : InformlyClientEnvironment
-        The environment to use for requests from the client. from .environment import InformlyClientEnvironment
+    environment : InformlyEnvironment
+        The environment to use for requests from the client. from .environment import InformlyEnvironment
 
 
 
-        Defaults to InformlyClientEnvironment.DEFAULT
+        Defaults to InformlyEnvironment.DEFAULT
 
 
 
@@ -36,7 +36,7 @@ class InformlyClient:
         Additional headers to send with every request.
 
     timeout : typing.Optional[float]
-        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
+        The timeout to be used, in seconds, for requests. By default the timeout is 30 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
@@ -49,9 +49,9 @@ class InformlyClient:
 
     Examples
     --------
-    from informly import InformlyClient
+    from informly import Informly
 
-    client = InformlyClient(
+    client = Informly(
         token="YOUR_TOKEN",
     )
     """
@@ -60,7 +60,7 @@ class InformlyClient:
         self,
         *,
         base_url: typing.Optional[str] = None,
-        environment: InformlyClientEnvironment = InformlyClientEnvironment.DEFAULT,
+        environment: InformlyEnvironment = InformlyEnvironment.DEFAULT,
         token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
@@ -69,7 +69,7 @@ class InformlyClient:
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
         _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
+            timeout if timeout is not None else 30 if httpx_client is None else httpx_client.timeout.read
         )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -94,7 +94,7 @@ class InformlyClient:
         return self._contacts
 
 
-class AsyncInformlyClient:
+class AsyncInformly:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -103,12 +103,12 @@ class AsyncInformlyClient:
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : InformlyClientEnvironment
-        The environment to use for requests from the client. from .environment import InformlyClientEnvironment
+    environment : InformlyEnvironment
+        The environment to use for requests from the client. from .environment import InformlyEnvironment
 
 
 
-        Defaults to InformlyClientEnvironment.DEFAULT
+        Defaults to InformlyEnvironment.DEFAULT
 
 
 
@@ -117,7 +117,7 @@ class AsyncInformlyClient:
         Additional headers to send with every request.
 
     timeout : typing.Optional[float]
-        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
+        The timeout to be used, in seconds, for requests. By default the timeout is 30 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
@@ -130,9 +130,9 @@ class AsyncInformlyClient:
 
     Examples
     --------
-    from informly import AsyncInformlyClient
+    from informly import AsyncInformly
 
-    client = AsyncInformlyClient(
+    client = AsyncInformly(
         token="YOUR_TOKEN",
     )
     """
@@ -141,7 +141,7 @@ class AsyncInformlyClient:
         self,
         *,
         base_url: typing.Optional[str] = None,
-        environment: InformlyClientEnvironment = InformlyClientEnvironment.DEFAULT,
+        environment: InformlyEnvironment = InformlyEnvironment.DEFAULT,
         token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
@@ -150,7 +150,7 @@ class AsyncInformlyClient:
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
         _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
+            timeout if timeout is not None else 30 if httpx_client is None else httpx_client.timeout.read
         )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -175,7 +175,7 @@ class AsyncInformlyClient:
         return self._contacts
 
 
-def _get_base_url(*, base_url: typing.Optional[str] = None, environment: InformlyClientEnvironment) -> str:
+def _get_base_url(*, base_url: typing.Optional[str] = None, environment: InformlyEnvironment) -> str:
     if base_url is not None:
         return base_url
     elif environment is not None:

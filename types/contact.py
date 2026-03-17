@@ -11,18 +11,36 @@ from .contact_contact import ContactContact
 
 
 class Contact(UniversalBaseModel):
-    id: str
-    email: typing.Optional[str] = None
-    phone: typing.Optional[str] = None
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the contact
+    """
+
+    email: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Email address of the contact
+    """
+
+    phone: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Phone number of the contact
+    """
+
     contact: ContactContact
     organization_id: typing_extensions.Annotated[
-        str, FieldMetadata(alias="organizationId"), pydantic.Field(alias="organizationId")
+        str,
+        FieldMetadata(alias="organizationId"),
+        pydantic.Field(alias="organizationId", description="ID of the organization this contact belongs to"),
     ]
     created_at: typing_extensions.Annotated[
-        dt.datetime, FieldMetadata(alias="createdAt"), pydantic.Field(alias="createdAt")
+        dt.datetime,
+        FieldMetadata(alias="createdAt"),
+        pydantic.Field(alias="createdAt", description="Timestamp when the contact was created"),
     ]
     updated_at: typing_extensions.Annotated[
-        dt.datetime, FieldMetadata(alias="updatedAt"), pydantic.Field(alias="updatedAt")
+        dt.datetime,
+        FieldMetadata(alias="updatedAt"),
+        pydantic.Field(alias="updatedAt", description="Timestamp when the contact was last updated"),
     ]
 
     model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)

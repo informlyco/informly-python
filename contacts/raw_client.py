@@ -39,8 +39,10 @@ class RawContactsClient:
         Parameters
         ----------
         page : typing.Optional[int]
+            Page number (1-indexed)
 
         page_size : typing.Optional[int]
+            Number of items per page (1-100)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -115,16 +117,22 @@ class RawContactsClient:
         Parameters
         ----------
         email : typing.Optional[str]
+            Email address of the contact
 
         phone : typing.Optional[str]
+            Phone number of the contact
 
         firstname : typing.Optional[str]
+            First name of the contact
 
         lastname : typing.Optional[str]
+            Last name of the contact
 
         jobtitle : typing.Optional[str]
+            Job title of the contact
 
         company : typing.Optional[str]
+            Company of contact (if different) or organization name
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -210,6 +218,7 @@ class RawContactsClient:
         Parameters
         ----------
         id : str
+            Unique identifier of the resource
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -281,8 +290,10 @@ class AsyncRawContactsClient:
         Parameters
         ----------
         page : typing.Optional[int]
+            Page number (1-indexed)
 
         page_size : typing.Optional[int]
+            Number of items per page (1-100)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -357,16 +368,22 @@ class AsyncRawContactsClient:
         Parameters
         ----------
         email : typing.Optional[str]
+            Email address of the contact
 
         phone : typing.Optional[str]
+            Phone number of the contact
 
         firstname : typing.Optional[str]
+            First name of the contact
 
         lastname : typing.Optional[str]
+            Last name of the contact
 
         jobtitle : typing.Optional[str]
+            Job title of the contact
 
         company : typing.Optional[str]
+            Company of contact (if different) or organization name
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -452,6 +469,7 @@ class AsyncRawContactsClient:
         Parameters
         ----------
         id : str
+            Unique identifier of the resource
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

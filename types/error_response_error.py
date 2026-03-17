@@ -8,8 +8,19 @@ from .error_response_error_details_item import ErrorResponseErrorDetailsItem
 
 
 class ErrorResponseError(UniversalBaseModel):
-    code: str
-    message: str
-    details: typing.Optional[typing.List[ErrorResponseErrorDetailsItem]] = None
+    code: str = pydantic.Field()
+    """
+    Machine-readable error code
+    """
+
+    message: str = pydantic.Field()
+    """
+    Human-readable error message
+    """
+
+    details: typing.Optional[typing.List[ErrorResponseErrorDetailsItem]] = pydantic.Field(default=None)
+    """
+    Field-level validation errors, if applicable
+    """
 
     model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)

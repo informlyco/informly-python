@@ -39,8 +39,10 @@ class ContactsClient:
         Parameters
         ----------
         page : typing.Optional[int]
+            Page number (1-indexed)
 
         page_size : typing.Optional[int]
+            Number of items per page (1-100)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -52,12 +54,15 @@ class ContactsClient:
 
         Examples
         --------
-        from informly import InformlyClient
+        from informly import Informly
 
-        client = InformlyClient(
+        client = Informly(
             token="YOUR_TOKEN",
         )
-        client.contacts.list_contacts()
+        client.contacts.list_contacts(
+            page=1,
+            page_size=20,
+        )
         """
         _response = self._raw_client.list_contacts(page=page, page_size=page_size, request_options=request_options)
         return _response.data
@@ -77,16 +82,22 @@ class ContactsClient:
         Parameters
         ----------
         email : typing.Optional[str]
+            Email address of the contact
 
         phone : typing.Optional[str]
+            Phone number of the contact
 
         firstname : typing.Optional[str]
+            First name of the contact
 
         lastname : typing.Optional[str]
+            Last name of the contact
 
         jobtitle : typing.Optional[str]
+            Job title of the contact
 
         company : typing.Optional[str]
+            Company of contact (if different) or organization name
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -98,9 +109,9 @@ class ContactsClient:
 
         Examples
         --------
-        from informly import InformlyClient
+        from informly import Informly
 
-        client = InformlyClient(
+        client = Informly(
             token="YOUR_TOKEN",
         )
         client.contacts.create_contact()
@@ -121,6 +132,7 @@ class ContactsClient:
         Parameters
         ----------
         id : str
+            Unique identifier of the resource
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -132,9 +144,9 @@ class ContactsClient:
 
         Examples
         --------
-        from informly import InformlyClient
+        from informly import Informly
 
-        client = InformlyClient(
+        client = Informly(
             token="YOUR_TOKEN",
         )
         client.contacts.get_contact(
@@ -171,8 +183,10 @@ class AsyncContactsClient:
         Parameters
         ----------
         page : typing.Optional[int]
+            Page number (1-indexed)
 
         page_size : typing.Optional[int]
+            Number of items per page (1-100)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -186,15 +200,18 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly import AsyncInformlyClient
+        from informly import AsyncInformly
 
-        client = AsyncInformlyClient(
+        client = AsyncInformly(
             token="YOUR_TOKEN",
         )
 
 
         async def main() -> None:
-            await client.contacts.list_contacts()
+            await client.contacts.list_contacts(
+                page=1,
+                page_size=20,
+            )
 
 
         asyncio.run(main())
@@ -219,16 +236,22 @@ class AsyncContactsClient:
         Parameters
         ----------
         email : typing.Optional[str]
+            Email address of the contact
 
         phone : typing.Optional[str]
+            Phone number of the contact
 
         firstname : typing.Optional[str]
+            First name of the contact
 
         lastname : typing.Optional[str]
+            Last name of the contact
 
         jobtitle : typing.Optional[str]
+            Job title of the contact
 
         company : typing.Optional[str]
+            Company of contact (if different) or organization name
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -242,9 +265,9 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly import AsyncInformlyClient
+        from informly import AsyncInformly
 
-        client = AsyncInformlyClient(
+        client = AsyncInformly(
             token="YOUR_TOKEN",
         )
 
@@ -273,6 +296,7 @@ class AsyncContactsClient:
         Parameters
         ----------
         id : str
+            Unique identifier of the resource
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -286,9 +310,9 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly import AsyncInformlyClient
+        from informly import AsyncInformly
 
-        client = AsyncInformlyClient(
+        client = AsyncInformly(
             token="YOUR_TOKEN",
         )
 

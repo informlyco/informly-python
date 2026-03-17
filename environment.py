@@ -3,5 +3,5 @@
 import enum
 
 
-class InformlyClientEnvironment(enum.Enum):
-    DEFAULT = "https://api.informly.com/v1"
+class InformlyEnvironment(enum.Enum):
+    DEFAULT = "http://localhost:4000/api/v1"

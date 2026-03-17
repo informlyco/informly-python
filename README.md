@@ -7,6 +7,7 @@ The Informly Python library provides convenient access to the Informly APIs from
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Reference](#reference)
 - [Usage](#usage)
@@ -18,6 +19,10 @@ The Informly Python library provides convenient access to the Informly APIs from
   - [Timeouts](#timeouts)
   - [Custom Client](#custom-client)
 - [Contributing](#contributing)
+
+## Documentation
+
+API reference documentation is available [here](https://docs.informly.com/docs/api-reference).
 
 ## Installation
 
@@ -34,9 +39,9 @@ A full reference for this library is available [here](./reference.md).
 Instantiate and use the client with the following:
 
 ```python
-from informly import InformlyClient
+from informly import Informly
 
-client = InformlyClient(
+client = Informly(
     token="<token>",
 )
 
@@ -50,9 +55,9 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 import asyncio
 
-from informly import AsyncInformlyClient
+from informly import AsyncInformly
 
-client = AsyncInformlyClient(
+client = AsyncInformly(
     token="<token>",
 )
 
@@ -87,9 +92,9 @@ The SDK provides access to raw response data, including headers, through the `.w
 The `.with_raw_response` property returns a "raw" client that can be used to access the `.headers` and `.data` attributes.
 
 ```python
-from informly import InformlyClient
+from informly import Informly
 
-client = InformlyClient(...)
+client = Informly(...)
 response = client.contacts.with_raw_response.create_contact(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
@@ -121,9 +126,9 @@ client.contacts.create_contact(..., request_options={
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```python
-from informly import InformlyClient
+from informly import Informly
 
-client = InformlyClient(..., timeout=20.0)
+client = Informly(..., timeout=20.0)
 
 # Override timeout for a specific method
 client.contacts.create_contact(..., request_options={
@@ -138,9 +143,9 @@ and transports.
 
 ```python
 import httpx
-from informly import InformlyClient
+from informly import Informly
 
-client = InformlyClient(
+client = Informly(
     ...,
     httpx_client=httpx.Client(
         proxy="http://my.test.proxy.example.com",

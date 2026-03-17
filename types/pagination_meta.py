@@ -9,11 +9,23 @@ from ..core.serialization import FieldMetadata
 
 
 class PaginationMeta(UniversalBaseModel):
-    total: float
-    page: float
-    page_size: typing_extensions.Annotated[float, FieldMetadata(alias="pageSize"), pydantic.Field(alias="pageSize")]
+    total: float = pydantic.Field()
+    """
+    Total number of items across all pages
+    """
+
+    page: float = pydantic.Field()
+    """
+    Current page number
+    """
+
+    page_size: typing_extensions.Annotated[
+        float, FieldMetadata(alias="pageSize"), pydantic.Field(alias="pageSize", description="Number of items per page")
+    ]
     total_pages: typing_extensions.Annotated[
-        float, FieldMetadata(alias="totalPages"), pydantic.Field(alias="totalPages")
+        float,
+        FieldMetadata(alias="totalPages"),
+        pydantic.Field(alias="totalPages", description="Total number of pages"),
     ]
 
     model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)

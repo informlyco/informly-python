@@ -7,7 +7,14 @@ from ..core.pydantic_utilities import UniversalBaseModel
 
 
 class ErrorResponseErrorDetailsItem(UniversalBaseModel):
-    path: str
-    message: str
+    path: str = pydantic.Field()
+    """
+    JSON path to the invalid field
+    """
+
+    message: str = pydantic.Field()
+    """
+    Validation error message for this field
+    """
 
     model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)

@@ -7,9 +7,24 @@ from ..core.pydantic_utilities import UniversalBaseModel
 
 
 class ContactContact(UniversalBaseModel):
-    firstname: typing.Optional[str] = None
-    lastname: typing.Optional[str] = None
-    jobtitle: typing.Optional[str] = None
-    company: typing.Optional[str] = None
+    firstname: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    First name of the contact
+    """
+
+    lastname: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Last name of the contact
+    """
+
+    jobtitle: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Job title of the contact
+    """
+
+    company: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Company or organization name
+    """
 
     model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)

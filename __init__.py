@@ -16,11 +16,11 @@ if typing.TYPE_CHECKING:
     )
     from .errors import BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError
     from . import contacts
-    from .client import AsyncInformlyClient, InformlyClient
+    from .client import AsyncInformly, Informly
     from .contacts import CreateContactResponse, GetContactResponse, ListContactsResponse
-    from .environment import InformlyClientEnvironment
+    from .environment import InformlyEnvironment
 _dynamic_imports: typing.Dict[str, str] = {
-    "AsyncInformlyClient": ".client",
+    "AsyncInformly": ".client",
     "BadRequestError": ".errors",
     "Contact": ".types",
     "ContactContact": ".types",
@@ -30,8 +30,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ErrorResponseErrorDetailsItem": ".types",
     "ForbiddenError": ".errors",
     "GetContactResponse": ".contacts",
-    "InformlyClient": ".client",
-    "InformlyClientEnvironment": ".environment",
+    "Informly": ".client",
+    "InformlyEnvironment": ".environment",
     "ListContactsResponse": ".contacts",
     "NotFoundError": ".errors",
     "PaginationMeta": ".types",
@@ -62,7 +62,7 @@ def __dir__():
 
 
 __all__ = [
-    "AsyncInformlyClient",
+    "AsyncInformly",
     "BadRequestError",
     "Contact",
     "ContactContact",
@@ -72,8 +72,8 @@ __all__ = [
     "ErrorResponseErrorDetailsItem",
     "ForbiddenError",
     "GetContactResponse",
-    "InformlyClient",
-    "InformlyClientEnvironment",
+    "Informly",
+    "InformlyEnvironment",
     "ListContactsResponse",
     "NotFoundError",
     "PaginationMeta",
