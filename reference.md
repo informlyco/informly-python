@@ -1,6 +1,6 @@
 # Reference
 ## Contacts
-<details><summary><code>client.contacts.<a href="src/informly/contacts/client.py">list_contacts</a>(...) -> ListContactsResponse</code></summary>
+<details><summary><code>client.contacts.<a href="src/informly_sdk/contacts/client.py">list_contacts</a>(...) -> ListContactsResponse</code></summary>
 <dl>
 <dd>
 
@@ -13,8 +13,8 @@
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",
@@ -68,7 +68,7 @@ client.contacts.list_contacts(
 </dl>
 </details>
 
-<details><summary><code>client.contacts.<a href="src/informly/contacts/client.py">create_contact</a>(...) -> CreateContactResponse</code></summary>
+<details><summary><code>client.contacts.<a href="src/informly_sdk/contacts/client.py">create_contact</a>(...) -> CreateContactResponse</code></summary>
 <dl>
 <dd>
 
@@ -95,8 +95,8 @@ Creates a new contact or updates an existing one if a contact with the same emai
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",
@@ -195,7 +195,7 @@ client.contacts.create_contact()
 </dl>
 </details>
 
-<details><summary><code>client.contacts.<a href="src/informly/contacts/client.py">delete_contacts</a>(...) -> DeleteContactsResponse</code></summary>
+<details><summary><code>client.contacts.<a href="src/informly_sdk/contacts/client.py">delete_contacts</a>(...) -> DeleteContactsResponse</code></summary>
 <dl>
 <dd>
 
@@ -208,8 +208,8 @@ client.contacts.create_contact()
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",
@@ -256,7 +256,7 @@ client.contacts.delete_contacts(
 </dl>
 </details>
 
-<details><summary><code>client.contacts.<a href="src/informly/contacts/client.py">get_contact</a>(...) -> GetContactResponse</code></summary>
+<details><summary><code>client.contacts.<a href="src/informly_sdk/contacts/client.py">get_contact</a>(...) -> GetContactResponse</code></summary>
 <dl>
 <dd>
 
@@ -269,8 +269,8 @@ client.contacts.delete_contacts(
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",
@@ -315,7 +315,7 @@ client.contacts.get_contact(
 </dl>
 </details>
 
-<details><summary><code>client.contacts.<a href="src/informly/contacts/client.py">update_contact</a>(...) -> UpdateContactResponse</code></summary>
+<details><summary><code>client.contacts.<a href="src/informly_sdk/contacts/client.py">update_contact</a>(...) -> UpdateContactResponse</code></summary>
 <dl>
 <dd>
 
@@ -342,8 +342,8 @@ Updates an existing contact's fields. If segmentIds is provided, it replaces all
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",
@@ -444,7 +444,7 @@ client.contacts.update_contact(
 </dl>
 </details>
 
-<details><summary><code>client.contacts.<a href="src/informly/contacts/client.py">delete_contact</a>(...) -> DeleteContactResponse</code></summary>
+<details><summary><code>client.contacts.<a href="src/informly_sdk/contacts/client.py">delete_contact</a>(...) -> DeleteContactResponse</code></summary>
 <dl>
 <dd>
 
@@ -457,8 +457,8 @@ client.contacts.update_contact(
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",
@@ -504,7 +504,7 @@ client.contacts.delete_contact(
 </details>
 
 ## Segments
-<details><summary><code>client.segments.<a href="src/informly/segments/client.py">list_segments</a>() -> ListSegmentsResponse</code></summary>
+<details><summary><code>client.segments.<a href="src/informly_sdk/segments/client.py">list_segments</a>() -> ListSegmentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -531,8 +531,8 @@ Returns all segments available in the organization.
 <dd>
 
 ```python
-from informly import Informly
-from informly.environment import InformlyEnvironment
+from informly-sdk import Informly
+from informly-sdk.environment import InformlyEnvironment
 
 client = Informly(
     token="<token>",

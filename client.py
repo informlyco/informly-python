@@ -50,11 +50,9 @@ class Informly:
 
     Examples
     --------
-    from informly import Informly
+    from informly-sdk import Informly
 
-    client = Informly(
-        token="YOUR_TOKEN",
-    )
+    client = Informly(token="YOUR_TOKEN", )
     """
 
     def __init__(
@@ -104,6 +102,24 @@ class Informly:
         return self._segments
 
 
+def _make_default_async_client(
+    timeout: typing.Optional[float],
+    follow_redirects: typing.Optional[bool],
+) -> httpx.AsyncClient:
+    try:
+        import httpx_aiohttp  # type: ignore[import-not-found]
+    except ImportError:
+        pass
+    else:
+        if follow_redirects is not None:
+            return httpx_aiohttp.HttpxAiohttpClient(timeout=timeout, follow_redirects=follow_redirects)
+        return httpx_aiohttp.HttpxAiohttpClient(timeout=timeout)
+
+    if follow_redirects is not None:
+        return httpx.AsyncClient(timeout=timeout, follow_redirects=follow_redirects)
+    return httpx.AsyncClient(timeout=timeout)
+
+
 class AsyncInformly:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
@@ -126,6 +142,9 @@ class AsyncInformly:
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
+    async_token : typing.Optional[typing.Callable[[], typing.Awaitable[str]]]
+        An async callable that returns a bearer token. Use this when token acquisition involves async I/O (e.g., refreshing tokens via an async HTTP client). When provided, this is used instead of the synchronous token for async requests.
+
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 30 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -140,11 +159,9 @@ class AsyncInformly:
 
     Examples
     --------
-    from informly import AsyncInformly
+    from informly-sdk import AsyncInformly
 
-    client = AsyncInformly(
-        token="YOUR_TOKEN",
-    )
+    client = AsyncInformly(token="YOUR_TOKEN", )
     """
 
     def __init__(
@@ -154,6 +171,7 @@ class AsyncInformly:
         environment: InformlyEnvironment = InformlyEnvironment.DEFAULT,
         token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
+        async_token: typing.Optional[typing.Callable[[], typing.Awaitable[str]]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
@@ -166,11 +184,10 @@ class AsyncInformly:
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,
             headers=headers,
+            async_token=async_token,
             httpx_client=httpx_client
             if httpx_client is not None
-            else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-            if follow_redirects is not None
-            else httpx.AsyncClient(timeout=_defaulted_timeout),
+            else _make_default_async_client(timeout=_defaulted_timeout, follow_redirects=follow_redirects),
             timeout=_defaulted_timeout,
             logging=logging,
         )

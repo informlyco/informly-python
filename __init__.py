@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     )
     from .errors import BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError
     from . import contacts, segments
+    from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .client import AsyncInformly, Informly
     from .contacts import (
         CreateContactResponse,
@@ -37,6 +38,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ContactContact": ".types",
     "ContactSegmentsItem": ".types",
     "CreateContactResponse": ".contacts",
+    "DefaultAioHttpClient": "._default_clients",
+    "DefaultAsyncHttpxClient": "._default_clients",
     "DeleteContactResponse": ".contacts",
     "DeleteContactsResponse": ".contacts",
     "DeleteContactsResponseData": ".contacts",
@@ -87,6 +90,8 @@ __all__ = [
     "ContactContact",
     "ContactSegmentsItem",
     "CreateContactResponse",
+    "DefaultAioHttpClient",
+    "DefaultAsyncHttpxClient",
     "DeleteContactResponse",
     "DeleteContactsResponse",
     "DeleteContactsResponseData",
