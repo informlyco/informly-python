@@ -39,9 +39,11 @@ class SegmentsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
         client.segments.list_segments()
         """
         _response = self._raw_client.list_segments(request_options=request_options)
@@ -81,11 +83,17 @@ class AsyncSegmentsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.segments.list_segments()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_segments(request_options=request_options)

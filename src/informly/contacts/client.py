@@ -57,10 +57,15 @@ class ContactsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
-        client.contacts.list_contacts(page=1, page_size=20, )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.list_contacts(
+            page=1,
+            page_size=20,
+        )
         """
         _response = self._raw_client.list_contacts(page=page, page_size=page_size, request_options=request_options)
         return _response.data
@@ -117,9 +122,11 @@ class ContactsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
         client.contacts.create_contact()
         """
         _response = self._raw_client.create_contact(
@@ -154,10 +161,14 @@ class ContactsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
-        client.contacts.delete_contacts(ids=['ids'], )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.delete_contacts(
+            ids=["ids"],
+        )
         """
         _response = self._raw_client.delete_contacts(ids=ids, request_options=request_options)
         return _response.data
@@ -179,10 +190,14 @@ class ContactsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
-        client.contacts.get_contact(id='id', )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.get_contact(
+            id="id",
+        )
         """
         _response = self._raw_client.get_contact(id, request_options=request_options)
         return _response.data
@@ -239,10 +254,14 @@ class ContactsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
-        client.contacts.update_contact(id='id', )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.update_contact(
+            id="id",
+        )
         """
         _response = self._raw_client.update_contact(
             id,
@@ -276,10 +295,14 @@ class ContactsClient:
 
         Examples
         --------
-        from informly-sdk import Informly
+        from informly import Informly
 
-        client = Informly(token="YOUR_TOKEN", )
-        client.contacts.delete_contact(id='id', )
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.delete_contact(
+            id="id",
+        )
         """
         _response = self._raw_client.delete_contact(id, request_options=request_options)
         return _response.data
@@ -328,11 +351,20 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.contacts.list_contacts(page=1, page_size=20, )
+            await client.contacts.list_contacts(
+                page=1,
+                page_size=20,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_contacts(
@@ -394,11 +426,17 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.contacts.create_contact()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_contact(
@@ -435,11 +473,19 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.contacts.delete_contacts(ids=['ids'], )
+            await client.contacts.delete_contacts(
+                ids=["ids"],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_contacts(ids=ids, request_options=request_options)
@@ -466,11 +512,19 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.contacts.get_contact(id='id', )
+            await client.contacts.get_contact(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_contact(id, request_options=request_options)
@@ -530,11 +584,19 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.contacts.update_contact(id='id', )
+            await client.contacts.update_contact(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_contact(
@@ -571,11 +633,19 @@ class AsyncContactsClient:
         --------
         import asyncio
 
-        from informly-sdk import AsyncInformly
+        from informly import AsyncInformly
 
-        client = AsyncInformly(token="YOUR_TOKEN", )
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.contacts.delete_contact(id='id', )
+            await client.contacts.delete_contact(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_contact(id, request_options=request_options)

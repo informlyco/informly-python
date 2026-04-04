@@ -50,9 +50,11 @@ class Informly:
 
     Examples
     --------
-    from informly-sdk import Informly
+    from informly import Informly
 
-    client = Informly(token="YOUR_TOKEN", )
+    client = Informly(
+        token="YOUR_TOKEN",
+    )
     """
 
     def __init__(
@@ -159,9 +161,11 @@ class AsyncInformly:
 
     Examples
     --------
-    from informly-sdk import AsyncInformly
+    from informly import AsyncInformly
 
-    client = AsyncInformly(token="YOUR_TOKEN", )
+    client = AsyncInformly(
+        token="YOUR_TOKEN",
+    )
     """
 
     def __init__(

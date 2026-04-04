@@ -1,7 +1,7 @@
 # Informly Python Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Informly%2FPython)
-[![pypi](https://img.shields.io/pypi/v/informly-sdk)](https://pypi.python.org/pypi/informly-sdk)
+[![pypi](https://img.shields.io/pypi/v/informly)](https://pypi.python.org/pypi/informly)
 
 The Informly Python library provides convenient access to the Informly APIs from Python.
 
@@ -26,7 +26,7 @@ API reference documentation is available [here](https://docs.informly.com/docs/a
 ## Installation
 
 ```sh
-pip install informly-sdk
+pip install informly
 ```
 
 ## Usage
@@ -34,7 +34,7 @@ pip install informly-sdk
 Instantiate and use the client with the following:
 
 ```python
-from informly-sdk import Informly
+from informly import Informly
 
 client = Informly(
     token="<token>",
@@ -48,8 +48,8 @@ client.contacts.create_contact()
 This SDK allows you to configure different environments for API requests.
 
 ```python
-from informly-sdk import Informly
-from informly-sdk.environment import InformlyEnvironment
+from informly import Informly
+from informly.environment import InformlyEnvironment
 
 client = Informly(
     environment=InformlyEnvironment.DEFAULT,
@@ -63,7 +63,7 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 import asyncio
 
-from informly-sdk import AsyncInformly
+from informly import AsyncInformly
 
 client = AsyncInformly(
     token="<token>",
@@ -83,7 +83,7 @@ When the API returns a non-success status code (4xx or 5xx response), a subclass
 will be thrown.
 
 ```python
-from informly-sdk.core.api_error import ApiError
+from informly.core.api_error import ApiError
 
 try:
     client.contacts.create_contact(...)
@@ -100,7 +100,7 @@ The SDK provides access to raw response data, including headers, through the `.w
 The `.with_raw_response` property returns a "raw" client that can be used to access the `.headers` and `.data` attributes.
 
 ```python
-from informly-sdk import Informly
+from informly import Informly
 
 client = Informly(...)
 response = client.contacts.with_raw_response.create_contact(...)
@@ -134,7 +134,7 @@ client.contacts.create_contact(..., request_options={
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```python
-from informly-sdk import Informly
+from informly import Informly
 
 client = Informly(..., timeout=20.0)
 
@@ -151,7 +151,7 @@ and transports.
 
 ```python
 import httpx
-from informly-sdk import Informly
+from informly import Informly
 
 client = Informly(
     ...,

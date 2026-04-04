@@ -1,9 +1,9 @@
 {
-  "cliVersion": "4.29.0",
+  "cliVersion": "4.62.0",
   "generatorName": "fernapi/fern-python-sdk",
   "generatorVersion": "5.3.1",
   "generatorConfig": {
-    "package_name": "informly-sdk",
+    "package_name": "informly",
     "client_class_name": "Informly",
     "improved_imports": true,
     "use_api_name_in_package": true,
