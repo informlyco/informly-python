@@ -11,6 +11,7 @@ from .environment import InformlyEnvironment
 
 if typing.TYPE_CHECKING:
     from .contacts.client import AsyncContactsClient, ContactsClient
+    from .segments.client import AsyncSegmentsClient, SegmentsClient
 
 
 class Informly:
@@ -84,6 +85,7 @@ class Informly:
             logging=logging,
         )
         self._contacts: typing.Optional[ContactsClient] = None
+        self._segments: typing.Optional[SegmentsClient] = None
 
     @property
     def contacts(self):
@@ -92,6 +94,14 @@ class Informly:
 
             self._contacts = ContactsClient(client_wrapper=self._client_wrapper)
         return self._contacts
+
+    @property
+    def segments(self):
+        if self._segments is None:
+            from .segments.client import SegmentsClient  # noqa: E402
+
+            self._segments = SegmentsClient(client_wrapper=self._client_wrapper)
+        return self._segments
 
 
 class AsyncInformly:
@@ -165,6 +175,7 @@ class AsyncInformly:
             logging=logging,
         )
         self._contacts: typing.Optional[AsyncContactsClient] = None
+        self._segments: typing.Optional[AsyncSegmentsClient] = None
 
     @property
     def contacts(self):
@@ -173,6 +184,14 @@ class AsyncInformly:
 
             self._contacts = AsyncContactsClient(client_wrapper=self._client_wrapper)
         return self._contacts
+
+    @property
+    def segments(self):
+        if self._segments is None:
+            from .segments.client import AsyncSegmentsClient  # noqa: E402
+
+            self._segments = AsyncSegmentsClient(client_wrapper=self._client_wrapper)
+        return self._segments
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: InformlyEnvironment) -> str:

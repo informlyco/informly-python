@@ -6,8 +6,11 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawContactsClient, RawContactsClient
 from .types.create_contact_response import CreateContactResponse
+from .types.delete_contact_response import DeleteContactResponse
+from .types.delete_contacts_response import DeleteContactsResponse
 from .types.get_contact_response import GetContactResponse
 from .types.list_contacts_response import ListContactsResponse
+from .types.update_contact_response import UpdateContactResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -76,16 +79,20 @@ class ContactsClient:
         lastname: typing.Optional[str] = OMIT,
         jobtitle: typing.Optional[str] = OMIT,
         company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        referral_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateContactResponse:
         """
+        Creates a new contact or updates an existing one if a contact with the same email or phone already exists. Optionally assigns segments and redeems a referral code.
+
         Parameters
         ----------
         email : typing.Optional[str]
-            Email address of the contact
+            Email address. Required if phone is not provided.
 
         phone : typing.Optional[str]
-            Phone number of the contact
+            Phone number in E.164 format. Required if email is not provided.
 
         firstname : typing.Optional[str]
             First name of the contact
@@ -97,7 +104,13 @@ class ContactsClient:
             Job title of the contact
 
         company : typing.Optional[str]
-            Company of contact (if different) or organization name
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign to the contact
+
+        referral_code : typing.Optional[str]
+            Referral code to redeem for this contact
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -123,8 +136,41 @@ class ContactsClient:
             lastname=lastname,
             jobtitle=jobtitle,
             company=company,
+            segment_ids=segment_ids,
+            referral_code=referral_code,
             request_options=request_options,
         )
+        return _response.data
+
+    def delete_contacts(
+        self, *, ids: typing.Sequence[str], request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteContactsResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Sequence[str]
+            Contact IDs to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteContactsResponse
+            Contacts deleted
+
+        Examples
+        --------
+        from informly import Informly
+
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.delete_contacts(
+            ids=["ids"],
+        )
+        """
+        _response = self._raw_client.delete_contacts(ids=ids, request_options=request_options)
         return _response.data
 
     def get_contact(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetContactResponse:
@@ -154,6 +200,111 @@ class ContactsClient:
         )
         """
         _response = self._raw_client.get_contact(id, request_options=request_options)
+        return _response.data
+
+    def update_contact(
+        self,
+        id: str,
+        *,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        firstname: typing.Optional[str] = OMIT,
+        lastname: typing.Optional[str] = OMIT,
+        jobtitle: typing.Optional[str] = OMIT,
+        company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateContactResponse:
+        """
+        Updates an existing contact's fields. If segmentIds is provided, it replaces all existing segment assignments.
+
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        email : typing.Optional[str]
+            Email address of the contact
+
+        phone : typing.Optional[str]
+            Phone number in E.164 format (e.g. +14155552671)
+
+        firstname : typing.Optional[str]
+            First name of the contact
+
+        lastname : typing.Optional[str]
+            Last name of the contact
+
+        jobtitle : typing.Optional[str]
+            Job title of the contact
+
+        company : typing.Optional[str]
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign (replaces existing segments)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateContactResponse
+            Contact updated
+
+        Examples
+        --------
+        from informly import Informly
+
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.update_contact(
+            id="id",
+        )
+        """
+        _response = self._raw_client.update_contact(
+            id,
+            email=email,
+            phone=phone,
+            firstname=firstname,
+            lastname=lastname,
+            jobtitle=jobtitle,
+            company=company,
+            segment_ids=segment_ids,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def delete_contact(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteContactResponse:
+        """
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteContactResponse
+            Contact deleted
+
+        Examples
+        --------
+        from informly import Informly
+
+        client = Informly(
+            token="YOUR_TOKEN",
+        )
+        client.contacts.delete_contact(
+            id="id",
+        )
+        """
+        _response = self._raw_client.delete_contact(id, request_options=request_options)
         return _response.data
 
 
@@ -230,16 +381,20 @@ class AsyncContactsClient:
         lastname: typing.Optional[str] = OMIT,
         jobtitle: typing.Optional[str] = OMIT,
         company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        referral_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateContactResponse:
         """
+        Creates a new contact or updates an existing one if a contact with the same email or phone already exists. Optionally assigns segments and redeems a referral code.
+
         Parameters
         ----------
         email : typing.Optional[str]
-            Email address of the contact
+            Email address. Required if phone is not provided.
 
         phone : typing.Optional[str]
-            Phone number of the contact
+            Phone number in E.164 format. Required if email is not provided.
 
         firstname : typing.Optional[str]
             First name of the contact
@@ -251,7 +406,13 @@ class AsyncContactsClient:
             Job title of the contact
 
         company : typing.Optional[str]
-            Company of contact (if different) or organization name
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign to the contact
+
+        referral_code : typing.Optional[str]
+            Referral code to redeem for this contact
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -285,8 +446,49 @@ class AsyncContactsClient:
             lastname=lastname,
             jobtitle=jobtitle,
             company=company,
+            segment_ids=segment_ids,
+            referral_code=referral_code,
             request_options=request_options,
         )
+        return _response.data
+
+    async def delete_contacts(
+        self, *, ids: typing.Sequence[str], request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteContactsResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Sequence[str]
+            Contact IDs to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteContactsResponse
+            Contacts deleted
+
+        Examples
+        --------
+        import asyncio
+
+        from informly import AsyncInformly
+
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.contacts.delete_contacts(
+                ids=["ids"],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_contacts(ids=ids, request_options=request_options)
         return _response.data
 
     async def get_contact(
@@ -326,4 +528,125 @@ class AsyncContactsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_contact(id, request_options=request_options)
+        return _response.data
+
+    async def update_contact(
+        self,
+        id: str,
+        *,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        firstname: typing.Optional[str] = OMIT,
+        lastname: typing.Optional[str] = OMIT,
+        jobtitle: typing.Optional[str] = OMIT,
+        company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateContactResponse:
+        """
+        Updates an existing contact's fields. If segmentIds is provided, it replaces all existing segment assignments.
+
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        email : typing.Optional[str]
+            Email address of the contact
+
+        phone : typing.Optional[str]
+            Phone number in E.164 format (e.g. +14155552671)
+
+        firstname : typing.Optional[str]
+            First name of the contact
+
+        lastname : typing.Optional[str]
+            Last name of the contact
+
+        jobtitle : typing.Optional[str]
+            Job title of the contact
+
+        company : typing.Optional[str]
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign (replaces existing segments)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateContactResponse
+            Contact updated
+
+        Examples
+        --------
+        import asyncio
+
+        from informly import AsyncInformly
+
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.contacts.update_contact(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_contact(
+            id,
+            email=email,
+            phone=phone,
+            firstname=firstname,
+            lastname=lastname,
+            jobtitle=jobtitle,
+            company=company,
+            segment_ids=segment_ids,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def delete_contact(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteContactResponse:
+        """
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteContactResponse
+            Contact deleted
+
+        Examples
+        --------
+        import asyncio
+
+        from informly import AsyncInformly
+
+        client = AsyncInformly(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.contacts.delete_contact(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_contact(id, request_options=request_options)
         return _response.data

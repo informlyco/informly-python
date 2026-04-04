@@ -16,8 +16,11 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
 from .types.create_contact_response import CreateContactResponse
+from .types.delete_contact_response import DeleteContactResponse
+from .types.delete_contacts_response import DeleteContactsResponse
 from .types.get_contact_response import GetContactResponse
 from .types.list_contacts_response import ListContactsResponse
+from .types.update_contact_response import UpdateContactResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -111,16 +114,20 @@ class RawContactsClient:
         lastname: typing.Optional[str] = OMIT,
         jobtitle: typing.Optional[str] = OMIT,
         company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        referral_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateContactResponse]:
         """
+        Creates a new contact or updates an existing one if a contact with the same email or phone already exists. Optionally assigns segments and redeems a referral code.
+
         Parameters
         ----------
         email : typing.Optional[str]
-            Email address of the contact
+            Email address. Required if phone is not provided.
 
         phone : typing.Optional[str]
-            Phone number of the contact
+            Phone number in E.164 format. Required if email is not provided.
 
         firstname : typing.Optional[str]
             First name of the contact
@@ -132,7 +139,13 @@ class RawContactsClient:
             Job title of the contact
 
         company : typing.Optional[str]
-            Company of contact (if different) or organization name
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign to the contact
+
+        referral_code : typing.Optional[str]
+            Referral code to redeem for this contact
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -152,6 +165,8 @@ class RawContactsClient:
                 "lastname": lastname,
                 "jobtitle": jobtitle,
                 "company": company,
+                "segmentIds": segment_ids,
+                "referralCode": referral_code,
             },
             headers={
                 "content-type": "application/json",
@@ -211,6 +226,76 @@ class RawContactsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def delete_contacts(
+        self, *, ids: typing.Sequence[str], request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[DeleteContactsResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Sequence[str]
+            Contact IDs to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[DeleteContactsResponse]
+            Contacts deleted
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "contacts",
+            method="DELETE",
+            json={
+                "ids": ids,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteContactsResponse,
+                    parse_obj_as(
+                        type_=DeleteContactsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     def get_contact(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetContactResponse]:
@@ -239,6 +324,189 @@ class RawContactsClient:
                     GetContactResponse,
                     parse_obj_as(
                         type_=GetContactResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def update_contact(
+        self,
+        id: str,
+        *,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        firstname: typing.Optional[str] = OMIT,
+        lastname: typing.Optional[str] = OMIT,
+        jobtitle: typing.Optional[str] = OMIT,
+        company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdateContactResponse]:
+        """
+        Updates an existing contact's fields. If segmentIds is provided, it replaces all existing segment assignments.
+
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        email : typing.Optional[str]
+            Email address of the contact
+
+        phone : typing.Optional[str]
+            Phone number in E.164 format (e.g. +14155552671)
+
+        firstname : typing.Optional[str]
+            First name of the contact
+
+        lastname : typing.Optional[str]
+            Last name of the contact
+
+        jobtitle : typing.Optional[str]
+            Job title of the contact
+
+        company : typing.Optional[str]
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign (replaces existing segments)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdateContactResponse]
+            Contact updated
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"contacts/{jsonable_encoder(id)}",
+            method="PUT",
+            json={
+                "email": email,
+                "phone": phone,
+                "firstname": firstname,
+                "lastname": lastname,
+                "jobtitle": jobtitle,
+                "company": company,
+                "segmentIds": segment_ids,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateContactResponse,
+                    parse_obj_as(
+                        type_=UpdateContactResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def delete_contact(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[DeleteContactResponse]:
+        """
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[DeleteContactResponse]
+            Contact deleted
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"contacts/{jsonable_encoder(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteContactResponse,
+                    parse_obj_as(
+                        type_=DeleteContactResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -362,16 +630,20 @@ class AsyncRawContactsClient:
         lastname: typing.Optional[str] = OMIT,
         jobtitle: typing.Optional[str] = OMIT,
         company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        referral_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateContactResponse]:
         """
+        Creates a new contact or updates an existing one if a contact with the same email or phone already exists. Optionally assigns segments and redeems a referral code.
+
         Parameters
         ----------
         email : typing.Optional[str]
-            Email address of the contact
+            Email address. Required if phone is not provided.
 
         phone : typing.Optional[str]
-            Phone number of the contact
+            Phone number in E.164 format. Required if email is not provided.
 
         firstname : typing.Optional[str]
             First name of the contact
@@ -383,7 +655,13 @@ class AsyncRawContactsClient:
             Job title of the contact
 
         company : typing.Optional[str]
-            Company of contact (if different) or organization name
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign to the contact
+
+        referral_code : typing.Optional[str]
+            Referral code to redeem for this contact
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -403,6 +681,8 @@ class AsyncRawContactsClient:
                 "lastname": lastname,
                 "jobtitle": jobtitle,
                 "company": company,
+                "segmentIds": segment_ids,
+                "referralCode": referral_code,
             },
             headers={
                 "content-type": "application/json",
@@ -462,6 +742,76 @@ class AsyncRawContactsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    async def delete_contacts(
+        self, *, ids: typing.Sequence[str], request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[DeleteContactsResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Sequence[str]
+            Contact IDs to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[DeleteContactsResponse]
+            Contacts deleted
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "contacts",
+            method="DELETE",
+            json={
+                "ids": ids,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteContactsResponse,
+                    parse_obj_as(
+                        type_=DeleteContactsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     async def get_contact(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetContactResponse]:
@@ -490,6 +840,189 @@ class AsyncRawContactsClient:
                     GetContactResponse,
                     parse_obj_as(
                         type_=GetContactResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def update_contact(
+        self,
+        id: str,
+        *,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        firstname: typing.Optional[str] = OMIT,
+        lastname: typing.Optional[str] = OMIT,
+        jobtitle: typing.Optional[str] = OMIT,
+        company: typing.Optional[str] = OMIT,
+        segment_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdateContactResponse]:
+        """
+        Updates an existing contact's fields. If segmentIds is provided, it replaces all existing segment assignments.
+
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        email : typing.Optional[str]
+            Email address of the contact
+
+        phone : typing.Optional[str]
+            Phone number in E.164 format (e.g. +14155552671)
+
+        firstname : typing.Optional[str]
+            First name of the contact
+
+        lastname : typing.Optional[str]
+            Last name of the contact
+
+        jobtitle : typing.Optional[str]
+            Job title of the contact
+
+        company : typing.Optional[str]
+            Company or organization name
+
+        segment_ids : typing.Optional[typing.Sequence[str]]
+            Segment IDs to assign (replaces existing segments)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdateContactResponse]
+            Contact updated
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"contacts/{jsonable_encoder(id)}",
+            method="PUT",
+            json={
+                "email": email,
+                "phone": phone,
+                "firstname": firstname,
+                "lastname": lastname,
+                "jobtitle": jobtitle,
+                "company": company,
+                "segmentIds": segment_ids,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateContactResponse,
+                    parse_obj_as(
+                        type_=UpdateContactResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete_contact(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[DeleteContactResponse]:
+        """
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[DeleteContactResponse]
+            Contact deleted
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"contacts/{jsonable_encoder(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteContactResponse,
+                    parse_obj_as(
+                        type_=DeleteContactResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

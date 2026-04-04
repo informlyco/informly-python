@@ -8,17 +8,21 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .contact import Contact
     from .contact_contact import ContactContact
+    from .contact_segments_item import ContactSegmentsItem
     from .error_response import ErrorResponse
     from .error_response_error import ErrorResponseError
     from .error_response_error_details_item import ErrorResponseErrorDetailsItem
     from .pagination_meta import PaginationMeta
+    from .segment import Segment
 _dynamic_imports: typing.Dict[str, str] = {
     "Contact": ".contact",
     "ContactContact": ".contact_contact",
+    "ContactSegmentsItem": ".contact_segments_item",
     "ErrorResponse": ".error_response",
     "ErrorResponseError": ".error_response_error",
     "ErrorResponseErrorDetailsItem": ".error_response_error_details_item",
     "PaginationMeta": ".pagination_meta",
+    "Segment": ".segment",
 }
 
 
@@ -46,8 +50,10 @@ def __dir__():
 __all__ = [
     "Contact",
     "ContactContact",
+    "ContactSegmentsItem",
     "ErrorResponse",
     "ErrorResponseError",
     "ErrorResponseErrorDetailsItem",
     "PaginationMeta",
+    "Segment",
 ]

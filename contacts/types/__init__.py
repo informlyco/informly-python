@@ -7,12 +7,20 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .create_contact_response import CreateContactResponse
+    from .delete_contact_response import DeleteContactResponse
+    from .delete_contacts_response import DeleteContactsResponse
+    from .delete_contacts_response_data import DeleteContactsResponseData
     from .get_contact_response import GetContactResponse
     from .list_contacts_response import ListContactsResponse
+    from .update_contact_response import UpdateContactResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateContactResponse": ".create_contact_response",
+    "DeleteContactResponse": ".delete_contact_response",
+    "DeleteContactsResponse": ".delete_contacts_response",
+    "DeleteContactsResponseData": ".delete_contacts_response_data",
     "GetContactResponse": ".get_contact_response",
     "ListContactsResponse": ".list_contacts_response",
+    "UpdateContactResponse": ".update_contact_response",
 }
 
 
@@ -37,4 +45,12 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["CreateContactResponse", "GetContactResponse", "ListContactsResponse"]
+__all__ = [
+    "CreateContactResponse",
+    "DeleteContactResponse",
+    "DeleteContactsResponse",
+    "DeleteContactsResponseData",
+    "GetContactResponse",
+    "ListContactsResponse",
+    "UpdateContactResponse",
+]

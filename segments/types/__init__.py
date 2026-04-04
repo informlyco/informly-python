@@ -6,24 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import (
-        CreateContactResponse,
-        DeleteContactResponse,
-        DeleteContactsResponse,
-        DeleteContactsResponseData,
-        GetContactResponse,
-        ListContactsResponse,
-        UpdateContactResponse,
-    )
-_dynamic_imports: typing.Dict[str, str] = {
-    "CreateContactResponse": ".types",
-    "DeleteContactResponse": ".types",
-    "DeleteContactsResponse": ".types",
-    "DeleteContactsResponseData": ".types",
-    "GetContactResponse": ".types",
-    "ListContactsResponse": ".types",
-    "UpdateContactResponse": ".types",
-}
+    from .list_segments_response import ListSegmentsResponse
+_dynamic_imports: typing.Dict[str, str] = {"ListSegmentsResponse": ".list_segments_response"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -47,12 +31,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "CreateContactResponse",
-    "DeleteContactResponse",
-    "DeleteContactsResponse",
-    "DeleteContactsResponseData",
-    "GetContactResponse",
-    "ListContactsResponse",
-    "UpdateContactResponse",
-]
+__all__ = ["ListSegmentsResponse"]

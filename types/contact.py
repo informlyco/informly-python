@@ -8,6 +8,7 @@ import typing_extensions
 from ..core.pydantic_utilities import UniversalBaseModel
 from ..core.serialization import FieldMetadata
 from .contact_contact import ContactContact
+from .contact_segments_item import ContactSegmentsItem
 
 
 class Contact(UniversalBaseModel):
@@ -23,10 +24,15 @@ class Contact(UniversalBaseModel):
 
     phone: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Phone number of the contact
+    Phone number in E.164 format
     """
 
     contact: ContactContact
+    segments: typing.Optional[typing.List[ContactSegmentsItem]] = pydantic.Field(default=None)
+    """
+    Segments assigned to this contact
+    """
+
     organization_id: typing_extensions.Annotated[
         str,
         FieldMetadata(alias="organizationId"),

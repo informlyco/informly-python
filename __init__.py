@@ -9,22 +9,37 @@ if typing.TYPE_CHECKING:
     from .types import (
         Contact,
         ContactContact,
+        ContactSegmentsItem,
         ErrorResponse,
         ErrorResponseError,
         ErrorResponseErrorDetailsItem,
         PaginationMeta,
+        Segment,
     )
     from .errors import BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError
-    from . import contacts
+    from . import contacts, segments
     from .client import AsyncInformly, Informly
-    from .contacts import CreateContactResponse, GetContactResponse, ListContactsResponse
+    from .contacts import (
+        CreateContactResponse,
+        DeleteContactResponse,
+        DeleteContactsResponse,
+        DeleteContactsResponseData,
+        GetContactResponse,
+        ListContactsResponse,
+        UpdateContactResponse,
+    )
     from .environment import InformlyEnvironment
+    from .segments import ListSegmentsResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AsyncInformly": ".client",
     "BadRequestError": ".errors",
     "Contact": ".types",
     "ContactContact": ".types",
+    "ContactSegmentsItem": ".types",
     "CreateContactResponse": ".contacts",
+    "DeleteContactResponse": ".contacts",
+    "DeleteContactsResponse": ".contacts",
+    "DeleteContactsResponseData": ".contacts",
     "ErrorResponse": ".types",
     "ErrorResponseError": ".types",
     "ErrorResponseErrorDetailsItem": ".types",
@@ -33,10 +48,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Informly": ".client",
     "InformlyEnvironment": ".environment",
     "ListContactsResponse": ".contacts",
+    "ListSegmentsResponse": ".segments",
     "NotFoundError": ".errors",
     "PaginationMeta": ".types",
+    "Segment": ".types",
     "UnauthorizedError": ".errors",
+    "UpdateContactResponse": ".contacts",
     "contacts": ".contacts",
+    "segments": ".segments",
 }
 
 
@@ -66,7 +85,11 @@ __all__ = [
     "BadRequestError",
     "Contact",
     "ContactContact",
+    "ContactSegmentsItem",
     "CreateContactResponse",
+    "DeleteContactResponse",
+    "DeleteContactsResponse",
+    "DeleteContactsResponseData",
     "ErrorResponse",
     "ErrorResponseError",
     "ErrorResponseErrorDetailsItem",
@@ -75,8 +98,12 @@ __all__ = [
     "Informly",
     "InformlyEnvironment",
     "ListContactsResponse",
+    "ListSegmentsResponse",
     "NotFoundError",
     "PaginationMeta",
+    "Segment",
     "UnauthorizedError",
+    "UpdateContactResponse",
     "contacts",
+    "segments",
 ]

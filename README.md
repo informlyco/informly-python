@@ -9,7 +9,6 @@ The Informly Python library provides convenient access to the Informly APIs from
 
 - [Documentation](#documentation)
 - [Installation](#installation)
-- [Reference](#reference)
 - [Usage](#usage)
 - [Async Client](#async-client)
 - [Exception Handling](#exception-handling)
@@ -18,7 +17,6 @@ The Informly Python library provides convenient access to the Informly APIs from
   - [Retries](#retries)
   - [Timeouts](#timeouts)
   - [Custom Client](#custom-client)
-- [Contributing](#contributing)
 
 ## Documentation
 
@@ -29,10 +27,6 @@ API reference documentation is available [here](https://docs.informly.com/docs/a
 ```sh
 pip install informly
 ```
-
-## Reference
-
-A full reference for this library is available [here](./reference.md).
 
 ## Usage
 
@@ -154,12 +148,3 @@ client = Informly(
 )
 ```
 
-## Contributing
-
-While we value open-source contributions to this SDK, this library is generated programmatically.
-Additions made directly to this library would have to be moved over to our generation code,
-otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
-a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
-an issue first to discuss with us!
-
-On the other hand, contributions to the README are always very welcome!
